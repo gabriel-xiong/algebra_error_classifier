@@ -1,0 +1,5 @@
+{"id": "eedi_0001", "question": "Solve for x: 3(x + 2) = 18", "correct_answer": "x = 4", "distractor": "x = 5", "misconception": "Distributes to only the first term inside the brackets"}
+{"id": "eedi_0002", "question": "Solve for x: x - 7 = 2", "correct_answer": "x = 9", "distractor": "x = -5", "misconception": "Moves a term across the equals sign without flipping the negative sign"}
+{"id": "datashop_0001", "problem": "2x + 5 = 13", "correct_answer": "x = 4", "student_answer": "x = 9", "student_work": "2x + 5 = 13; 2x = 18; x = 9", "misconception": "Adds instead of subtracting when isolating (does not keep both sides balanced)"}
+{"id": "manual_0001", "problem": "4x = 20", "correct_answer": "x = 5", "student_answer": "x = 16", "student_work": "4x = 20; x = 20 - 4; x = 16", "label": "operation_inverse_error"}
+{"id": "manual_0002", "problem": "x/2 + 3 = 7", "correct_answer": "x = 8", "student_answer": "x = 20", "student_work": "x/2 + 3 = 7; x/2 = 10; x = 20", "misconception": "Student seems confused about fractions in general"}

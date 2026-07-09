@@ -1,0 +1,16 @@
+outputs/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.png
+litmus_results.txt
+
+# Review tool runtime outputs (regenerated locally; not source of truth).
+data/real_bio_eval_reviewed.jsonl
+data/real_bio_eval_gold.jsonl
+
+# Secrets: never commit API keys or local env files.
+.env
+.env.*
+.local/
+*.key

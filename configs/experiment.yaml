@@ -1,0 +1,37 @@
+# Experiment defaults for the algebra error classifier.
+model: Qwen/Qwen3-1.7B
+litmus_model: Qwen/Qwen3-1.7B
+
+data:
+  # Disjoint splits are carved from one deduplicated pool (see make_splits.py),
+  # so train/val/test_holdout share zero problems.
+  train_n: 6000
+  val_n: 800
+  test_holdout_n: 1000
+  split_seed: 0
+  # Edge-case enriched: abstain spans no-work, nonsensical, and 5 dual-label-tie subtypes.
+  abstain_frac: 0.35
+
+training:
+  max_seq_length: 1024
+  epochs: 2
+  batch_size: 4
+  grad_accum: 4
+  learning_rate: 2.0e-4
+
+eval:
+  litmus_runs: 5
+  generation_temperature: 0.7
+
+paths:
+  train_raw: data/train.jsonl
+  val_raw: data/val.jsonl
+  train_sft: data/train_sft.jsonl
+  val_sft: data/val_sft.jsonl
+  test_holdout: data/test_holdout.jsonl
+  test_hand: data/testset.jsonl
+  lora: outputs/lora
+  calibration: outputs/calibration.json
+  eval_dir: outputs/eval
+  hard_negatives: data/hard_negatives.jsonl
+  real_eval: data/real_eval.jsonl

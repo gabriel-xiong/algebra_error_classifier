@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AP Bio Misconception Gold Review</title>
+  <link rel="stylesheet" href="/static/review.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-row">
+      <div class="brand">AP&nbsp;Bio Misconception&nbsp;<span class="brand-accent">Gold Review</span></div>
+      <div class="nav">
+        <button id="prevBtn" class="btn" title="Previous item (Left arrow)">&larr; Prev</button>
+        <span id="itemCounter" class="counter">&ndash;</span>
+        <button id="nextBtn" class="btn" title="Next item (Right arrow)">Next &rarr;</button>
+      </div>
+      <div class="topbar-actions">
+        <label class="filter">
+          Show:
+          <select id="filterSelect">
+            <option value="all">All items</option>
+            <option value="unreviewed">Unreviewed only</option>
+            <option value="nofit">Has no-fit draft</option>
+          </select>
+        </label>
+        <button id="exportBtn" class="btn btn-export" title="Write gold JSONL">Export gold</button>
+      </div>
+    </div>
+    <div class="progress-row">
+      <div class="progress-block">
+        <div class="progress-label">Distractors reviewed <span id="distStat">0 / 0</span></div>
+        <div class="bar"><div id="distBar" class="bar-fill"></div></div>
+      </div>
+      <div class="progress-block">
+        <div class="progress-label">Items complete <span id="itemStat">0 / 0</span></div>
+        <div class="bar"><div id="itemBar" class="bar-fill"></div></div>
+      </div>
+      <div id="saveStatus" class="save-status">saved</div>
+    </div>
+  </header>
+
+  <main id="itemView" class="item-view"></main>
+
+  <footer class="helpbar">
+    <span class="kbd">y</span> confirm &nbsp;
+    <span class="kbd">n</span> drop/no-fit &nbsp;
+    <span class="kbd">j</span>/<span class="kbd">k</span> distractor &nbsp;
+    <span class="kbd">&larr;</span>/<span class="kbd">&rarr;</span> item &nbsp;
+    <span class="kbd">/</span> search &nbsp;
+    <span class="kbd">i</span> toggle include
+  </footer>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="/static/review.js"></script>
+</body>
+</html>

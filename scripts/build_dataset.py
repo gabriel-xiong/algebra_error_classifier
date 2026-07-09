@@ -31,7 +31,9 @@ from pathlib import Path
 import conceptual_engine as engine
 import gen_cellresp
 import gen_enzymes
+import gen_evolution
 import gen_genetics
+import gen_membrane
 import gen_spec
 
 REPO = Path(__file__).resolve().parent.parent
@@ -40,6 +42,8 @@ SEED = 0
 CONCEPTUAL = [
     (gen_cellresp.TOPIC, gen_cellresp.FRAMES, gen_cellresp.ERROR_TYPE, "gen_cellresp"),
     (gen_enzymes.TOPIC, gen_enzymes.FRAMES, gen_enzymes.ERROR_TYPE, "gen_enzymes"),
+    (gen_membrane.TOPIC, gen_membrane.FRAMES, gen_membrane.ERROR_TYPE, "gen_membrane"),
+    (gen_evolution.TOPIC, gen_evolution.FRAMES, gen_evolution.ERROR_TYPE, "gen_evolution"),
 ]
 
 

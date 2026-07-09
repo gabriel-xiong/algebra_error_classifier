@@ -4,4 +4,5 @@
 {"scenario_id": "eval_003", "topic": "cellular_respiration", "frame": "no_oxygen", "misconception_ids": ["cr_etc_runs_anaerobically", "cr_fermentation_makes_atp", "cr_glycolysis_needs_o2"], "mode": "heldout_combo", "n_samples": 3}
 {"scenario_id": "eval_004", "topic": "enzymes", "frame": "mechanism", "misconception_ids": ["enz_change_equilibrium", "enz_consumed_in_reaction", "enz_raise_activation_energy"], "mode": "heldout_combo", "n_samples": 3}
 {"scenario_id": "eval_005", "topic": "enzymes", "frame": "thermodynamics", "misconception_ids": ["enz_change_equilibrium", "enz_consumed_in_reaction", "enz_higher_temp_always_faster"], "mode": "heldout_combo", "n_samples": 3}
-{"scenario_id": "eval_006", "topic": "genetics", "misconception_ids": ["gen_genotype_phenotype_confusion", "gen_wrong_punnett_ratio", "map_answers_single_trait"], "mode": "reliability", "n_samples": 40}
+{"scenario_id": "eval_006", "topic": "evolution", "frame": "antibiotic_resistance", "misconception_ids": ["evo_individual_adapts", "evo_need_drives_mutation", "evo_selection_creates_variation"], "mode": "heldout_combo", "n_samples": 3}
+{"scenario_id": "eval_007", "topic": "genetics", "misconception_ids": ["gen_genotype_phenotype_confusion", "gen_wrong_punnett_ratio", "map_answers_single_trait"], "mode": "reliability", "n_samples": 40}

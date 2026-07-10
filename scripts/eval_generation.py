@@ -126,12 +126,36 @@ class HFGenerator:
                                skip_special_tokens=True)
 
 
+class OpenAIGenerator:
+    """A frontier model as a GENERATOR (for the 'can a prompted frontier model
+    already do this?' comparison). Reuses the same generation prompt."""
+
+    def __init__(self, model: str, temperature: float = 0.0):
+        from openai import OpenAI
+        self.client = OpenAI()
+        self.model = model
+        self.temperature = temperature
+
+    def generate(self, scenario: dict) -> str:
+        system, user = gen_spec.build_generation_prompt(
+            scenario["topic"], scenario["misconception_ids"])
+        resp = self.client.chat.completions.create(
+            model=self.model,
+            messages=[{"role": "system", "content": system},
+                      {"role": "user", "content": user}],
+            temperature=self.temperature, max_tokens=800)
+        return resp.choices[0].message.content or ""
+
+
 def make_generator(spec: str, temperature: float = 0.0):
     if spec.startswith("mock:"):
         return MockGenerator(spec.split(":", 1)[1])
     if spec.startswith("hf:"):
         return HFGenerator(spec.split(":", 1)[1], temperature=temperature)
-    raise ValueError(f"unknown generator spec: {spec} (use mock:good|mock:bad|hf:<path>)")
+    if spec.startswith("openai:"):
+        return OpenAIGenerator(spec.split(":", 1)[1], temperature=temperature)
+    raise ValueError(f"unknown generator spec: {spec} "
+                     "(use mock:good|mock:bad|hf:<path>|openai:<model>)")
 
 
 # ------------------------------------------------------------------ scoring

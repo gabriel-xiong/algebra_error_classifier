@@ -91,10 +91,23 @@ A model **~1,000× smaller, local, and free** lands within ~0.1 of prompted gpt-
 on the trained behavior — and *beats* it on task quality. Two things strengthen
 this: (1) gpt-4o was **also the judge**, so its conceptual scores are biased in its
 own favor, and the specialist matched it anyway; (2) the genetics portion is scored
-by objective recompute, so it is bias-free. The point is not to beat the frontier —
-it is that a tiny local model reaches **frontier-parity on the one trained behavior**.
-Honest scope: this is in-distribution; on unseen topics (OOD) gpt-4o would lead,
-since it generalizes while this model specializes.
+by objective recompute, so it is bias-free.
+
+Out-of-distribution (photosynthesis, unseen, n=20): gpt-4o leads, as expected of a
+generalist — spec_adherence 2.00 vs 1.95 (near-tie: the format transfers), but
+distractor_mapping 1.75 vs 1.40 and reliability 0.80 vs 0.35. (gpt-4o's OOD numbers
+are self-judge-inflated with no objective anchor, so its lead is an upper bound.)
+
+### The full picture (distractor_mapping)
+| | base 1.7B | tuned 1.7B | gpt-4o |
+|---|---|---|---|
+| in-distribution | 1.05 | **1.80** | 1.90 |
+| out-of-distribution | 0.70 | 1.40 | 1.75 |
+
+The point is not to beat the frontier — it is that **a tiny local model reaches
+frontier-parity on its trained niche**, while the frontier leads where breadth
+matters. Specialists and generalists have different jobs, and these numbers mark
+the boundary precisely.
 
 ## Did "data → behavior" hold?
 **Yes, with an honest boundary.** Data reliably instilled the behavior

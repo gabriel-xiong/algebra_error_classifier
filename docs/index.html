@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QuestionGen — misconception-tagged AP Bio question generator</title>
+<style>
+  :root{--bg:#0f1420;--card:#181f2e;--line:#2a3346;--txt:#e6ebf5;--mut:#9aa7bd;--acc:#5b8cff;--ok:#3ecf8e;}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--txt);
+    font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:860px;margin:0 auto;padding:48px 20px 80px}
+  h1{font-size:30px;margin:0 0 8px} h2{margin:44px 0 12px;font-size:20px}
+  .sub{color:var(--mut);font-size:18px;margin:0 0 8px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .links{margin:18px 0 8px;display:flex;gap:10px;flex-wrap:wrap}
+  .links a{border:1px solid var(--line);padding:8px 14px;border-radius:8px;background:var(--card)}
+  table{border-collapse:collapse;width:100%;margin:8px 0;font-size:15px}
+  th,td{border:1px solid var(--line);padding:8px 12px;text-align:left}
+  th{background:var(--card);color:var(--mut);font-weight:600}
+  td.win{color:var(--ok);font-weight:700}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
+  .topic{text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:var(--acc);margin-bottom:6px}
+  .stem{font-weight:600;margin:0 0 10px}
+  .choices{list-style:none;padding:0;margin:0} .choices li{padding:6px 0;border-top:1px solid var(--line)}
+  .mis{color:var(--mut);font-size:14px;margin-top:2px} code{color:#ffc38a}
+  .badge.ok{background:rgba(62,207,142,.15);color:var(--ok);border-radius:6px;padding:1px 8px;font-size:12px}
+  .note{color:var(--mut);font-size:14px}
+</style></head>
+<body><div class="wrap">
+  <h1>QuestionGen</h1>
+  <p class="sub">A fine-tuned 1.7B model that writes AP Biology multiple-choice questions
+  where <b>every wrong answer is a specific, named student misconception</b> — not a random distractor.</p>
+  <div class="links">
+    <a href="https://github.com/gabriel-xiong/QuestionGen">GitHub repo</a>
+    <a href="https://huggingface.co/gabriel-xiong/apbio-item-generator-qwen3-1.7b-lora">Model on Hugging Face</a>
+    <a href="https://github.com/gabriel-xiong/QuestionGen/blob/main/docs/brainlift_generator.md">Write-up</a>
+    <a href="https://colab.research.google.com/github/gabriel-xiong/QuestionGen/blob/main/notebooks/try_it.ipynb">Try it (Colab)</a>
+  </div>
+
+  <h2>Why it matters</h2>
+  <p>Good multiple-choice questions need distractors that map to real misconceptions, so a tutoring
+  system can diagnose <i>why</i> a student erred. Generic models produce plausible-but-random wrong
+  answers. This model was trained — via a purpose-built dataset — to make every wrong answer a
+  deliberate, labeled error, and returns it as structured JSON.</p>
+
+  <h2>How it's evaluated (four dimensions, scored 0–2)</h2>
+  <table>
+    <tr><th>Dimension</th><th>What it checks</th></tr>
+    <tr><td>Spec adherence</td><td>valid JSON: 4 options, one correct, every wrong option tagged</td></tr>
+    <tr><td>Distractor mapping</td><td>does each wrong answer truly embody its labeled misconception</td></tr>
+    <tr><td>Task quality</td><td>biology correct: right answer keyed, distractors actually wrong</td></tr>
+    <tr><td>Consistency</td><td>reliable behavior across similar prompts</td></tr>
+  </table>
+  <p class="note">Genetics is scored objectively by recomputing the Punnett cross; conceptual topics
+  use an LLM judge validated against human labels. Models are compared on held-out prompts.</p>
+
+  <h2>Results — base vs. fine-tuned (0–2)</h2>
+  <table>
+    <tr><th>Dimension</th><th>Base Qwen3-1.7B</th><th>Fine-tuned</th></tr>
+    <tr><td>Spec adherence</td><td>1.80</td><td class="win">2.00</td></tr>
+    <tr><td>Distractor mapping</td><td>1.05</td><td class="win">1.80</td></tr>
+    <tr><td>Task quality</td><td>1.71</td><td class="win">2.00</td></tr>
+    <tr><td>Consistency (fully-correct rate)</td><td>15%</td><td class="win">80%</td></tr>
+  </table>
+  <p class="note">Genetics answer correctness (objective): <b>0/40 → 40/40</b>. The base model never
+  produces a valid, correctly-solved cross; the fine-tuned model does it every time.</p>
+
+  <h2>Specialist vs. frontier (distractor mapping, 0–2)</h2>
+  <table>
+    <tr><th></th><th>Base 1.7B</th><th>Fine-tuned 1.7B</th><th>GPT-4o (prompted)</th></tr>
+    <tr><td>In-distribution</td><td>1.05</td><td class="win">1.80</td><td>1.90</td></tr>
+    <tr><td>Out-of-distribution (unseen topic)</td><td>0.70</td><td>1.40</td><td>1.75</td></tr>
+  </table>
+  <p class="note">On its trained behavior the 1.7B model reaches near-parity with a much larger frontier
+  model, at a fraction of the size and cost; the frontier leads on unseen topics, as a generalist should.</p>
+
+  <h2>Example generated items</h2>
+  <p class="note">Real items from the model's dataset — each wrong answer carries the misconception it embodies.</p>
+  <div class="q"><div class="topic">genetics</div>
+<p class="stem">In a plant, coat color (black, C) is dominant to brown (c), and flower position (axial, F) is dominant to terminal (f). The genes assort independently. A cross is made: CcFf x ccFf. What fraction of the offspring are expected to be brown (coat color) and axial (flower position)?</p><ul class="choices">
+<li><b>A.</b> 1/2<div class="mis"><code>map_answers_single_trait</code> — Gives the probability/fraction for one trait when the stem asks for the joint (both-traits, &#x27;AND&#x27;) outcome.</div></li>
+<li class="correct"><b>B.</b> 3/8 <span class="badge ok">correct</span></li>
+<li><b>C.</b> 3/16<div class="mis"><code>gen_wrong_punnett_ratio</code> — Knows the 9:3:3:1 / 3:1 / 1:16 ratios but maps the wrong fraction onto the requested phenotype combination.</div></li>
+<li><b>D.</b> 1/8<div class="mis"><code>gen_genotype_phenotype_confusion</code> — Reports a genotype ratio when asked for a phenotype ratio (or vice versa).</div></li>
+</ul></div>
+<div class="q"><div class="topic">cellular respiration</div>
+<p class="stem">In the absence of oxygen, how is a cell able to keep making any ATP?</p><ul class="choices">
+<li class="correct"><b>A.</b> Oxidative phosphorylation stops, but glycolysis continues because fermentation regenerates NAD+. <span class="badge ok">correct</span></li>
+<li><b>B.</b> All of respiration, including glycolysis, stops immediately because glycolysis needs oxygen.<div class="mis"><code>cr_glycolysis_needs_o2</code> — Assumes glycolysis is aerobic and cannot proceed without O2.</div></li>
+<li><b>C.</b> The cell switches to fermentation, which now directly produces most of its ATP.<div class="mis"><code>cr_fermentation_makes_atp</code> — Believes fermentation itself generates ATP, rather than regenerating NAD+ so glycolysis can continue producing ATP.</div></li>
+<li><b>D.</b> The cell spends its stored NADH directly as ATP to get by.<div class="mis"><code>cr_nadh_makes_atp_directly</code> — Treats NADH as a direct ATP product rather than an electron carrier that feeds the ETC.</div></li>
+</ul></div>
+<div class="q"><div class="topic">enzymes</div>
+<p class="stem">How does an enzyme increase the rate of a chemical reaction?</p><ul class="choices">
+<li class="correct"><b>A.</b> It lowers the activation energy required for the reaction to proceed. <span class="badge ok">correct</span></li>
+<li><b>B.</b> It increases the activation-energy barrier of the reaction.<div class="mis"><code>enz_raise_activation_energy</code> — States enzymes increase activation energy, reversing their role of lowering it.</div></li>
+<li><b>C.</b> It binds and converts any available molecule to force the reaction.<div class="mis"><code>enz_specificity_any_substrate</code> — Ignores active-site specificity, treating an enzyme as able to catalyze unrelated reactions.</div></li>
+<li><b>D.</b> It shifts the reaction&#x27;s equilibrium toward the products.<div class="mis"><code>enz_change_equilibrium</code> — Thinks enzymes shift the reaction equilibrium or change ΔG rather than only speeding the approach to equilibrium.</div></li>
+</ul></div>
+
+  <p class="note" style="margin-top:40px">Built by Gabriel Xiong · Qwen3-1.7B · QLoRA (Unsloth) ·
+  Hugging Face · evaluation via programmatic scoring + validated LLM judge.</p>
+</div></body></html>

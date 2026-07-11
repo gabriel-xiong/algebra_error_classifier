@@ -19,7 +19,12 @@ import gradio as gr
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-MODEL_ID = "gabriel-xiong/apbio-item-generator-qwen3-1.7b"  # <-- your merged repo
+# Your fine-tuned repo. If it is a LoRA ADAPTER (repo name ends in -lora), leave
+# ADAPTER=True so the base is loaded and the adapter applied on top (works on a
+# free CPU Space). If you pushed a MERGED model, set ADAPTER=False.
+MODEL_ID = "gabriel-xiong/apbio-item-generator-qwen3-1.7b-lora"
+ADAPTER = True
+BASE_ID = "Qwen/Qwen3-1.7B"
 
 SYSTEM_PROMPT = (
     "You are an AP Biology item writer. You generate multiple-choice questions in "
@@ -33,9 +38,16 @@ MISC = {m["id"]: m for m in json.loads(
 TOPICS = sorted({m["topic"] for m in MISC.values()})
 
 print("loading model…")
-tok = AutoTokenizer.from_pretrained(MODEL_ID)
-model = AutoModelForCausalLM.from_pretrained(MODEL_ID, torch_dtype="auto",
-                                             device_map="auto")
+if ADAPTER:
+    from peft import PeftModel
+    tok = AutoTokenizer.from_pretrained(BASE_ID)
+    model = AutoModelForCausalLM.from_pretrained(BASE_ID, torch_dtype="auto",
+                                                 device_map="auto")
+    model = PeftModel.from_pretrained(model, MODEL_ID)
+else:
+    tok = AutoTokenizer.from_pretrained(MODEL_ID)
+    model = AutoModelForCausalLM.from_pretrained(MODEL_ID, torch_dtype="auto",
+                                                 device_map="auto")
 model.eval()
 
 

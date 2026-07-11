@@ -1,5 +1,9 @@
 # QuestionGen — AI-generated AP Biology questions with meaningful wrong answers
 
+[![Open the live demo in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/gabriel-xiong/QuestionGen/blob/main/notebooks/try_it.ipynb)
+
+*Try it:* open the notebook above → **Run all** → click the public link it prints.
+
 A fine-tuned small language model that writes AP Biology multiple-choice
 questions where **every wrong answer reflects a specific, well-known student
 misconception** — not a random distractor. The model returns a clean, structured

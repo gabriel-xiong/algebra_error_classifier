@@ -55,6 +55,31 @@ while gpt-4o matched the human labels exactly, so gpt-4o was chosen as the judge
   misconception mapping over the base model, and improving the dataset's topic
   coverage is what made that generalization possible.
 
+## Base vs. fine-tuned on the same request
+Both models were asked to write a **photosynthesis** item (a topic held out of
+training) embedding three specific misconceptions, one per wrong answer.
+
+**Base Qwen3-1.7B** tags only one wrong answer; the other two are off-spec:
+```
+Q: In photosynthesis, where does the oxygen (O2) released come from?
+  A. CO2            misconception: ps_o2_comes_from_co2
+  B. water (H2O)    [correct]
+  C. ATP            (untagged)
+  D. NADPH          (untagged)
+```
+
+**Fine-tuned** puts a requested misconception behind every wrong answer:
+```
+Q: What is the direct source of reduction power (ATP and NADPH) in the Calvin cycle?
+  A. The oxygen released at the end of respiration comes from the CO2.
+       misconception: ps_o2_comes_from_co2
+  B. The light reactions produce it directly.    [correct]
+  C. The Calvin cycle itself requires light directly.
+       misconception: ps_calvin_needs_light_directly
+  D. It comes from the light reactions, which fix CO2 into organic molecules.
+       misconception: ps_light_dark_reaction_swap
+```
+
 ## How it works
 Good exam distractors are *engineered*, not scraped. Real question banks are full
 of filler wrong answers that don't correspond to any coherent misconception, so the
